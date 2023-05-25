@@ -42,7 +42,7 @@ namespace Homework_number_43
                 switch (userInput)
                 {
                     case CommandShowBackpack:
-                        player.ShowListOfItems();
+                        player.ShowProductList();
                         break;
 
                     case CommandBuyProduct:
@@ -53,7 +53,40 @@ namespace Homework_number_43
                         isExit = true;
                         break;
                 }
+
+                Console.WriteLine("Для продолжения ведите любую клавишу...");
+                Console.ReadKey();
+                Console.Clear();
             }
+        }
+    }
+
+    class Hero
+    {
+        protected List<Product> _products = new List<Product>();
+
+        public int Money { get; protected set; }
+
+        public void ShowProductList()
+        {
+            if (_products.Count() > 0)
+            {
+                for (int i = 0; i < _products.Count; i++)
+                {
+                    ShowMessage($"\nНазвание: {_products[i].Title} - Цена: {_products[i].Price}\n");
+                }
+            }
+            else
+            {
+                ShowMessage("К сожалению нет не одного предмета!");
+            }
+        }
+
+        protected void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Blue)
+        {
+            Console.ForegroundColor = consoleColor;
+            Console.WriteLine(text);
+            Console.ResetColor();
         }
     }
 
@@ -69,16 +102,12 @@ namespace Homework_number_43
         public int Price { get; private set; }
     }
 
-    class Player
+    class Player : Hero
     {
-        private List<Product> _products = new List<Product>();
-
-        public Player(int money)
+        public Player(int money) 
         {
             Money = money;
         }
-
-        public int Money { get; private set; }
 
         public void BuyProduct(Seller seller)
         {
@@ -94,51 +123,13 @@ namespace Homework_number_43
                 ShowMessage("Придмет успешно перемещён к вам в рюкзак");
             }
         }
-
-        public void ShowListOfItems()
-        {
-            if (_products.Count() > 0)
-            {
-                ShowMessage($"Рюкзак");
-
-                for (int i = 0; i < _products.Count; i++)
-                {
-                    ShowMessage($"Название: {_products[i].Title} - Цена: {_products[i].Price}");
-                }
-            }
-            else
-            {
-                ShowMessage("К сожалению ваш рюкзак пуст!");
-            }
-        }
-
-        private void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Blue)
-        {
-            Console.ForegroundColor = consoleColor;
-            Console.WriteLine(text);
-            Console.ResetColor();
-        }
     }
 
-    class Seller
+    class Seller : Hero
     {
-        private List<Product> _products = new List<Product>();
-
         public Seller(List<Product> products)
         {
             _products = products;
-        }
-
-        public int Money { get; private set; }
-
-        public void ShowProductList()
-        {
-            ShowMessage($"Список товаров");
-
-            for (int i = 0; i < _products.Count; i++)
-            {
-                ShowMessage($"Название: {_products[i].Title} - Цена: {_products[i].Price}");
-            }
         }
 
         public bool TrySellProduct(out Product product, int playerMoney, string title)
@@ -174,13 +165,6 @@ namespace Homework_number_43
             }
 
             return false;
-        }
-
-        private void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Green)
-        {
-            Console.ForegroundColor = consoleColor;
-            Console.WriteLine(text);
-            Console.ResetColor();
         }
     }
 }
