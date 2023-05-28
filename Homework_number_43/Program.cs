@@ -71,16 +71,14 @@ namespace Homework_number_43
 
         public void ShowProductList()
         {
-            if (_products.Count() > 0)
+            if (_products.Count() == 0)
             {
-                for (int i = 0; i < _products.Count; i++)
-                {
-                    ShowMessage($"\nНазвание: {_products[i].Title} - Цена: {_products[i].Price}\n");
-                }
+                return;
             }
-            else
+
+            for (int i = 0; i < _products.Count; i++)
             {
-                ShowMessage("К сожалению нет не одного предмета!");
+                ShowMessage($"\nНазвание: {_products[i].Title} - Цена: {_products[i].Price}\n");
             }
         }
     }
