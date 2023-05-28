@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 
 namespace Homework_number_43
 {
@@ -21,6 +22,7 @@ namespace Homework_number_43
 
             Seller seller = new Seller(products);
             Player player = new Player(playerMoney);
+            Market market = new Market();
 
             bool isExit = false;
             string userInput;
@@ -46,7 +48,7 @@ namespace Homework_number_43
                         break;
 
                     case CommandBuyProduct:
-                        player.BuyProduct(seller);
+                        market.MakeDeal(seller,player);
                         break;
 
                     case CommandExit:
@@ -61,7 +63,7 @@ namespace Homework_number_43
         }
     }
 
-    class Hero
+    class Hero : TextRenderer
     {
         protected List<Product> _products = new List<Product>();
 
@@ -81,13 +83,6 @@ namespace Homework_number_43
                 ShowMessage("К сожалению нет не одного предмета!");
             }
         }
-
-        protected void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Blue)
-        {
-            Console.ForegroundColor = consoleColor;
-            Console.WriteLine(text);
-            Console.ResetColor();
-        }
     }
 
     class Product
@@ -102,6 +97,30 @@ namespace Homework_number_43
         public int Price { get; private set; }
     }
 
+    class Market : TextRenderer
+    {
+        public void MakeDeal(Seller seller , Player player)
+        {
+            ShowMessage("Укажите название товара который хотите купить: ", ConsoleColor.Cyan);
+            string userInput = Console.ReadLine();
+
+            if (seller.TrySellProduct(out Product product, player.Money, userInput) && product != null)
+            {
+                player.BuyProduct(product);
+            }
+        }
+    }
+
+    class TextRenderer
+    {
+        protected void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Blue)
+        {
+            Console.ForegroundColor = consoleColor;
+            Console.WriteLine(text);
+            Console.ResetColor();
+        }
+    }
+
     class Player : Hero
     {
         public Player(int money) 
@@ -109,12 +128,9 @@ namespace Homework_number_43
             Money = money;
         }
 
-        public void BuyProduct(Seller seller)
+        public void BuyProduct(Product product)
         {
-            ShowMessage("Укажите название товара который хотите купить: ", ConsoleColor.Cyan);
-            string userInput = Console.ReadLine();
-
-            if (seller.TrySellProduct(out Product product, Money, userInput) && product != null)
+            if (product != null)
             {
                 _products.Add(product);
 
