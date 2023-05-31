@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 
 namespace Homework_number_43
 {
@@ -63,7 +62,7 @@ namespace Homework_number_43
         }
     }
 
-    class Hero : TextRenderer
+    class Hero
     {
         protected List<Product> _products = new List<Product>();
 
@@ -78,7 +77,7 @@ namespace Homework_number_43
 
             for (int i = 0; i < _products.Count; i++)
             {
-                ShowMessage($"\nНазвание: {_products[i].Title} - Цена: {_products[i].Price}\n");
+                Console.WriteLine($"\nНазвание: {_products[i].Title} - Цена: {_products[i].Price}\n");
             }
         }
     }
@@ -95,27 +94,17 @@ namespace Homework_number_43
         public int Price { get; private set; }
     }
 
-    class Market : TextRenderer
+    class Market
     {
         public void MakeDeal(Seller seller , Player player)
         {
-            ShowMessage("Укажите название товара который хотите купить: ", ConsoleColor.Cyan);
+            Console.WriteLine("Укажите название товара который хотите купить: ", ConsoleColor.Cyan);
             string userInput = Console.ReadLine();
 
             if (seller.TrySellProduct(out Product product, player.Money, userInput) && product != null)
             {
                 player.BuyProduct(product);
             }
-        }
-    }
-
-    class TextRenderer
-    {
-        protected void ShowMessage(string text, ConsoleColor consoleColor = ConsoleColor.Blue)
-        {
-            Console.ForegroundColor = consoleColor;
-            Console.WriteLine(text);
-            Console.ResetColor();
         }
     }
 
@@ -134,7 +123,7 @@ namespace Homework_number_43
 
                 Money -= product.Price;
 
-                ShowMessage("Придмет успешно перемещён к вам в рюкзак");
+                Console.WriteLine("Придмет успешно перемещён к вам в рюкзак");
             }
         }
     }
@@ -166,16 +155,11 @@ namespace Homework_number_43
                     }
                     else
                     {
-                        ShowMessage("К сожалению у вас не хватает денег\n", ConsoleColor.Red);
+                        Console.WriteLine("К сожалению у вас не хватает денег\n", ConsoleColor.Red);
 
                         return false;
                     }
                 }
-            }
-
-            if (product == null)
-            {
-                ShowMessage("К сожалению у меня нет этого товара в наличии", ConsoleColor.Red);
             }
 
             return false;
