@@ -64,20 +64,20 @@ namespace Homework_number_43
 
     class Hero
     {
-        protected List<Product> _products = new List<Product>();
+        protected List<Product> Products = new List<Product>();
 
         public int Money { get; protected set; }
 
         public void ShowProductList()
         {
-            if (_products.Count() == 0)
+            if (Products.Count() == 0)
             {
                 return;
             }
 
-            for (int i = 0; i < _products.Count; i++)
+            for (int i = 0; i < Products.Count; i++)
             {
-                Console.WriteLine($"\nНазвание: {_products[i].Title} - Цена: {_products[i].Price}\n");
+                Console.WriteLine($"\nНазвание: {Products[i].Title} - Цена: {Products[i].Price}\n");
             }
         }
     }
@@ -119,7 +119,7 @@ namespace Homework_number_43
         {
             if (product != null)
             {
-                _products.Add(product);
+                Products.Add(product);
 
                 Money -= product.Price;
 
@@ -132,24 +132,24 @@ namespace Homework_number_43
     {
         public Seller(List<Product> products)
         {
-            _products = products;
+            Products = products;
         }
 
         public bool TrySellProduct(out Product product, int playerMoney, string title)
         {
             product = null;
 
-            for (int i = 0; i < _products.Count; i++)
+            for (int i = 0; i < Products.Count; i++)
             {
-                if (_products[i].Title == title)
+                if (Products[i].Title == title)
                 {
-                    if (playerMoney >= _products[i].Price)
+                    if (playerMoney >= Products[i].Price)
                     {
-                        product = _products[i];
+                        product = Products[i];
 
-                        Money += _products[i].Price;
+                        Money += Products[i].Price;
 
-                        _products.RemoveAt(i);
+                        Products.RemoveAt(i);
 
                         return true;
                     }
